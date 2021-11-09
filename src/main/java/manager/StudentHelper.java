@@ -13,47 +13,53 @@ public class StudentHelper extends HelperBase{
     public StudentHelper(WebDriver wd) {
         super(wd);
     }
-    public void openStudentForm(){
-        click(By.cssSelector("(//h5[normalize-space()='Forms'])[1]"));
-        click(By.id("item-0"));
-
+    public void selectItemForms() {
+        if(isElementPresent(By.id("close-fixedban"))) {
+            click(By.id("close-fixedban"));
+        }
+        click(By.xpath("//div[@class='category-cards']/div[2]"));
+        pause(500);
     }
 
-    public void fillStudentForm(){
-        if(isStudentRegistrationFormPresent()){
-            type(By.id("firstName"),);
-            type(By.id("lastName"),);
-            type(By.id("userEmail"),);
-            type(By.id("userNumber"),);
-            type(By.id("subjectsContainer"),);
-            type(By.id("currentAddress"),);
-            select(By.id("react-select-3-input"),);
-            select(By.id("react-select-4-input"),);
+    public void selectPracticeForm() {
+        click(By.xpath("//span[.='Practice Form']"));
+    }
+    public void uploadPicture() {
+        wd.findElement(By.id("uploadPicture")).sendKeys("C:\\Users\\User\\QA30\\Qa30_DemoQa-master\\boys-haircuts.jpg");
+    }
+    public void submit() {
+        click(By.id("submit"));
+    }
 
+    public void closeSuccessDialog() {
+        click(By.id("closeLargeModal"));
+    }
 
+    public void fillStudentForm(Student model){
+            type(By.id("firstName"), model.getFirstName());
+            type(By.id("lastName"), model.getLastName());
+            type(By.id("userEmail"), model.getEmail());
+            type(By.id("userNumber"), model.getMobile());
+            selectGender(model.getGender());
+            pause(3000);
+           // type(By.id("subjectsContainer"),);
+            type(By.id("currentAddress"), model.getCurrentAddress());
+            //select(By.id("react-select-3-input"),);
+            //select(By.id("react-select-4-input"),);
 
         }
+
+        public void selectGender(String gender){
+        if(gender.equals("Male")){
+            click(By.xpath("//label[@for='gender-radio-1']"));
+        }else if(gender.equals("Female")){
+            click(By.xpath("//label[@for='gender-radio-2']"));
+        }else if(gender.equals("Other")){
+            click(By.xpath("//label[@for='gender-radio-3']"));
+        }
+        }
+
+        public void
     }
 
 
-
-    private void select(By locator, String option) {
-        new Select(wd.findElement(locator)).selectByValue(option);
-
-
-    }
-
-    private boolean isStudentRegistrationFormPresent() {
-        Boolean isForm = new WebDriverWait(wd,10).until(ExpectedConditions.textToBePresentInElement(wd.findElement(By.cssSelector("h5")),"Student Registration Form"));
-        return isForm;
-
-
-    }
-
-
-
-
-
-
-
-}
