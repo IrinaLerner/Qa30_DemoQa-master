@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class StudentHelper extends HelperBase {
 
 
@@ -48,21 +50,58 @@ public class StudentHelper extends HelperBase {
         selectGender(model.getGender());
         //typedateOfBirth(model.getDateOfBirth());
         typedateOfBirthSelect(model.getDateOfBirth());
-        // type(By.id("subjectsContainer"),);
+        addSubject(model.getSubjects());
+        selectHobby(model.getHobbies());
         type(By.id("currentAddress"), model.getCurrentAddress());
-        //select(By.id("react-select-3-input"),);
-        //select(By.id("react-select-4-input"),);
+        //typeState(model.getState());
+        //typeCity(model.getCity());
 
+    }
+
+    private void addSubject(String subjects) {
+        String[] all = new String[0];
+        if(subjects!=null && !subjects.isEmpty()) {
+            all=  subjects.split(",");
+        }
+
+        click(By.id("subjectsInput"));
+
+        for (String sub:all) {
+            wd.findElement(By.id("subjectsInput")).sendKeys(sub);
+            //wd.findElement(By.id("subjectsInput")).sendKeys(Keys.ENTER);//or
+            click(By.id("react-select-2-option-0")); //or
+
+            pause(4000);
+        }
+    }
+
+    private void selectHobby(String hobbies) {
+        //
+//        WebElement el = wd.findElement(By.id(""));
+//        el.sendKeys("type text");
+//
+//        Actions actions = new Actions(wd);
+//        actions.moveToElement(el).sendKeys("type key").perform();
     }
 
     private void typedateOfBirthSelect(String dateOfBirth) {
         String [] data = dateOfBirth.split(" ");
-        
+
         click(By.id("dateOfBirthInput"));
-        new Select(wd.findElement(By.cssSelector(".react-datepicker__month-select"))).selectByValue("3");
-        new Select(wd.findElement(By.cssSelector(".react-datepicker__year-select"))).selectByValue("1986");
-        click(By.xpath("//div[text()='25']"));
-        pause(6000);
+        new Select(wd.findElement(By.cssSelector(".react-datepicker__month-select"))).selectByVisibleText(data[3]);
+        new Select(wd.findElement(By.cssSelector(".react-datepicker__year-select"))).selectByValue(data[2]);
+        //click(By.xpath("//div[text()='25']"));
+        String locator2 = String.format("//div[text()='%s']",data[0]);
+        List<WebElement> list = wd.findElements(By.xpath(locator2));
+
+        if(list.size()>1 && Integer.parseInt(data[0])>15){
+            list.get(1).click();
+        }else {
+            list.get(0).click();
+        }
+
+        //click(By.xpath(locator2));
+        pause(2000);
 
     }
 

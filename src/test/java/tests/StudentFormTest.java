@@ -23,7 +23,7 @@ public class StudentFormTest extends TestBase{
                 .email("den@gmail.com")
                 .gender("Male")
                 .mobile("9876543210")
-                .dateOfBirth("12 03 1986")
+                .dateOfBirth("12 April 1986")
                 .subjects("Geography")
                 .hobbies("Sport")
                 .currentAddress("Tel Aviv")
