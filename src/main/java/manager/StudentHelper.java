@@ -1,14 +1,15 @@
 package manager;
 
+import models.Hobby;
 import models.Student;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import models.StudentEnum;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
 import java.util.List;
 
 public class StudentHelper extends HelperBase {
@@ -58,6 +59,58 @@ public class StudentHelper extends HelperBase {
 
     }
 
+    public void fillStudentForm(StudentEnum model) {
+        type(By.id("firstName"), model.getFirstName());
+        type(By.id("lastName"), model.getLastName());
+        type(By.id("userEmail"), model.getEmail());
+        type(By.id("userNumber"), model.getMobile());
+        selectGender(model.getGender());
+        //typedateOfBirth(model.getDateOfBirth());
+        typedateOfBirthSelect(model.getDateOfBirth());
+        addSubject(model.getSubjects());
+        selectHobbyEnum(model.getHobbies());
+        type(By.id("currentAddress"), model.getCurrentAddress());
+        typeState(model.getState());
+        typeCity(model.getCity());
+
+    }
+
+    private void typeCity(String city) {
+        WebElement cityEL = wd.findElement(By.id("react-select-4-input"));
+        //cityEL.sendKeys(city);
+       // cityEL.sendKeys(Keys.ENTER);
+        new Actions(wd).sendKeys(cityEL,city).sendKeys(Keys.ENTER).perform();
+    }
+
+    private void typeState(String state) {
+        Dimension dimension =wd.manage().window().getSize();
+        System.out.println(dimension.getHeight()+dimension.getWidth());
+        //scroll
+        scroll(0,400);
+
+        WebElement element= wd.findElement(By.cssSelector("#react-select-3-input"));
+        element.sendKeys(state);
+        element.sendKeys(Keys.ENTER);
+    }
+
+    private void selectHobbyEnum(List<Hobby> hobbies){
+        for(Hobby h: hobbies){
+            switch(h){
+                case SPORTS:
+                    click(By.xpath("//label[@for='hobbies-checkbox-1']"));
+                    break;
+                case READING:
+                    click(By.xpath("//label[@for='hobbies-checkbox-2']"));
+                    break;
+                case MUSIC:
+                    click(By.xpath("//label[@for='hobbies-checkbox-3']"));
+                    break;
+            }
+        }
+
+
+    }
+
     private void addSubject(String subjects) {
         String[] all = new String[0];
         if(subjects!=null && !subjects.isEmpty()) {
@@ -76,19 +129,27 @@ public class StudentHelper extends HelperBase {
     }
 
     private void selectHobby(String hobbies) {
-        //
-//        WebElement el = wd.findElement(By.id(""));
-//        el.sendKeys("type text");
-//
-//        Actions actions = new Actions(wd);
-//        actions.moveToElement(el).sendKeys("type key").perform();
+        String [] all = hobbies.split(",");
+        for(String s:all){
+            switch (s){
+                case "Sports":
+                    click(By.xpath("//label[@for='hobbies-checkbox-1']"));
+                    break;
+                case"Reading":
+                    click(By.xpath("//label[@for='hobbies-checkbox-2']"));
+                    break;
+                case"Music":
+                    click(By.xpath("//label[@for='hobbies-checkbox-3']"));
+                    break;
+            }
+        }
     }
 
     private void typedateOfBirthSelect(String dateOfBirth) {
         String [] data = dateOfBirth.split(" ");
 
         click(By.id("dateOfBirthInput"));
-        new Select(wd.findElement(By.cssSelector(".react-datepicker__month-select"))).selectByVisibleText(data[3]);
+        new Select(wd.findElement(By.cssSelector(".react-datepicker__month-select"))).selectByVisibleText(data[1]);
         new Select(wd.findElement(By.cssSelector(".react-datepicker__year-select"))).selectByValue(data[2]);
         //click(By.xpath("//div[text()='25']"));
         String locator2 = String.format("//div[text()='%s']",data[0]);
@@ -133,6 +194,9 @@ public class StudentHelper extends HelperBase {
             click(By.xpath("//label[@for='gender-radio-3']"));
         }
     }
+
+    //public byte[] getTitleFromDialog() {
+   // }
 }
 
 
