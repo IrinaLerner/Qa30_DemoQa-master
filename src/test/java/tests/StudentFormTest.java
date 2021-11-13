@@ -29,7 +29,7 @@ public class StudentFormTest extends TestBase{
                 .gender("Male")
                 .mobile("9876543210")
                 .dateOfBirth("12 April 1986")
-                .subjects("Geography")
+                .subject("Geography")
                 .hobbies("Sport")
                 .currentAddress("Tel Aviv")
                 .state("NGHT")
@@ -40,7 +40,7 @@ public class StudentFormTest extends TestBase{
         app.studentHelper().pause(500);
         app.studentHelper().submit();
         app.studentHelper().pause(1000);
-        //Assert.assertEquals(app.studentHelper().getTitleFromDialog(),"Thanks for submitting the form");
+        Assert.assertEquals(app.studentHelper().getTitleFromDialog(),"Thanks for submitting the form");
         app.studentHelper().closeSuccessDialog();
 
     }
@@ -49,7 +49,7 @@ public class StudentFormTest extends TestBase{
         List<Hobby> hobbies = new ArrayList<>();
         hobbies.add(Hobby.MUSIC);
         hobbies.add(Hobby.READING);
-        hobbies.add(Hobby.SPORTS);
+        //hobbies.add(Hobby.SPORTS);
         
         StudentEnum student = StudentEnum.builder()
                 .firstName("Den")
@@ -71,7 +71,7 @@ public class StudentFormTest extends TestBase{
         app.studentHelper().pause(500);
         app.studentHelper().submit();
         app.studentHelper().pause(1000);
-        //Assert.assertEquals(app.studentHelper().getTitleFromDialog(),"Thanks for submitting the form");
+        Assert.assertEquals(app.studentHelper().getTitleFromDialog(),"Thanks for submitting the form");
         app.studentHelper().closeSuccessDialog();
 
     }

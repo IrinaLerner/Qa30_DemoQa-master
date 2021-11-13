@@ -5,11 +5,8 @@ import models.Student;
 import models.StudentEnum;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.swing.*;
 import java.util.List;
 
 public class StudentHelper extends HelperBase {
@@ -43,6 +40,10 @@ public class StudentHelper extends HelperBase {
         click(By.id("closeLargeModal"));
     }
 
+    public String getTitleFromDialog() {
+        return wd.findElement(By.id("example-modal-sizes-title-lg")).getText();
+    }
+
     public void fillStudentForm(Student model) {
         type(By.id("firstName"), model.getFirstName());
         type(By.id("lastName"), model.getLastName());
@@ -51,7 +52,7 @@ public class StudentHelper extends HelperBase {
         selectGender(model.getGender());
         //typedateOfBirth(model.getDateOfBirth());
         typedateOfBirthSelect(model.getDateOfBirth());
-        addSubject(model.getSubjects());
+        addSubject(model.getSubject());
         selectHobby(model.getHobbies());
         type(By.id("currentAddress"), model.getCurrentAddress());
         //typeState(model.getState());
@@ -111,10 +112,10 @@ public class StudentHelper extends HelperBase {
 
     }
 
-    private void addSubject(String subjects) {
+    private void addSubject(String subject) {
         String[] all = new String[0];
-        if(subjects!=null && !subjects.isEmpty()) {
-            all=  subjects.split(",");
+        if(subject!=null && !subject.isEmpty()) {
+            all=  subject.split(",");
         }
 
         click(By.id("subjectsInput"));
@@ -152,6 +153,7 @@ public class StudentHelper extends HelperBase {
         new Select(wd.findElement(By.cssSelector(".react-datepicker__month-select"))).selectByVisibleText(data[1]);
         new Select(wd.findElement(By.cssSelector(".react-datepicker__year-select"))).selectByValue(data[2]);
         //click(By.xpath("//div[text()='25']"));
+        String locator = "//div[text()='" + data[0]+"']";
         String locator2 = String.format("//div[text()='%s']",data[0]);
         List<WebElement> list = wd.findElements(By.xpath(locator2));
 
@@ -195,8 +197,7 @@ public class StudentHelper extends HelperBase {
         }
     }
 
-    //public byte[] getTitleFromDialog() {
-   // }
+
 }
 
 
